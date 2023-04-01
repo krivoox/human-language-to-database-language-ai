@@ -3,16 +3,21 @@ import { Container, Textarea, Card, Text, Button, Grid, Spacer } from "@nextui-o
 import { useForm } from 'react-hook-form';
 import api from '@/querys/client'
 
+type FormProps = {
+  humanLanguageValue: string
+}
+
 export default function Home() {
-  const { register, handleSubmit: submit } = useForm()
+  const { register, handleSubmit: submit } = useForm<FormProps>()
   const [queryAi, setQueryAi] = React.useState<string | undefined>()
 
 
-  const _handleSubmit = (prompt: any) => {
-    console.log(prompt)
-    api.generate(prompt)
+  const _handleSubmit = (event: FormProps) => {
+    console.log("🚀 ~ file: index.tsx:16 ~ Home ~ event:", event)
+
+    api.generate(event.humanLanguageValue)
       .then((res) => {
-        setQueryAi(res)
+        setQueryAi(res.outputText)
       })
       .catch((err) => {
         console.log("🚀 ~ file: index.tsx:15 ~ .then ~ err:", err)
